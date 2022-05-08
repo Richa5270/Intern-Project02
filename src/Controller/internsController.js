@@ -22,7 +22,7 @@ const CreateInterns = async function (req, res) {
     if (Object.keys(data.name).length == 0 || data.name.length == 0) {
       return res.status(400).send({ status: false, msg: "plz enter Name" });
      }
-     if (!/^([a-zA-Z]+)$/.test(data.name)) {
+     if (!/^([a-zA-Z]+)/.test(data.name)) {
       return res.status(400).send({ status: false, massege: "plz enter name" });
     }
      if (!data.email) {
@@ -62,7 +62,7 @@ const CreateInterns = async function (req, res) {
     if (!data.collegeName) {
       return res
         .status(400)
-        .send({ status: false, message: "collegeId is required" });
+        .send({ status: false, message: "collegeName is required" });
     }
     let collegeName = await collegeModel.find({name:req.body.collegeName}).select({_id:true})
     console.log(collegeName)
@@ -76,13 +76,13 @@ const CreateInterns = async function (req, res) {
     }
 
     
-    let saved = await InternModel.create({name:data.name, email:data.email, mobile:data.mobile, collegeName:collegeId[0]});
+    let saved = await InternModel.create({name:data.name, email:data.email, mobile:data.mobile, collegeId:collegeName[0]});
     let name = saved.name;
     let email = saved.email;
     let mobile = saved.mobile;
     let collegeId = saved.collegeId;
     let isDeleted = saved.isDeleted;
-    res.status(201).send({ status: true, data:{isDeleted,name,email,mobile, collegeId} });
+    res.status(201).send({ status: true, data:{isDeleted,name,email,mobile,collegeId} });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.massege });
   }
